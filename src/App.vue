@@ -1,10 +1,10 @@
 <template>
     <div class="app">
-        <form>
+        <form @submit.prevent>
             <h4>Создание поста</h4>
-            <input class="input" type="text" placeholder="Название">
-            <input class="input" type="text" placeholder="Описание">
-            <button class="btn">Создать</button>
+            <input @input="title = $event.target.value" v-bind:value="title" class="input" type="text" placeholder="Название">
+            <input @input="body = $event.target.value" v-bind:value="body" class="input" type="text" placeholder="Описание">
+            <button class="btn" @click="createPost">Создать</button>
         </form>
         <div class="posts" v-for="post in posts" v-bind:key="post.id">
             <div class="post">
@@ -24,16 +24,22 @@ export default {
                 {id: 2, title: 'JavaScript', body:"Описание поста 2"},
                 {id: 3, title: 'JavaScript', body:"Описание поста 3"},
                 {id: 4, title: 'JavaScript', body:"Описание поста 4"},
-            ]
+            ],
+            title: '',
+            body: '',
         }
     },
     methods: {
-        addLike() {
-            this.likes += 1;
+        createPost() {
+            const newPost = {
+                id: Date.now(),
+                title: this.title,
+                body: this.body,
+            }
+            this.posts.push(newPost);
+            this.title = '';
+            this.body = '';
         },
-        addDislike() {
-            this.dislikes -= 1;
-        }
     }
 }
 </script>
