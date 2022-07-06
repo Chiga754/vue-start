@@ -1,22 +1,17 @@
 <template>
     <div class="app">
-        <form @submit.prevent>
-            <h4>Создание поста</h4>
-            <input @input="title = $event.target.value" v-bind:value="title" class="input" type="text" placeholder="Название">
-            <input @input="body = $event.target.value" v-bind:value="body" class="input" type="text" placeholder="Описание">
-            <button class="btn" @click="createPost">Создать</button>
-        </form>
-        <div class="posts" v-for="post in posts" v-bind:key="post.id">
-            <div class="post">
-                <strong>Название</strong> : {{post.title}}
-                <strong>Описание</strong> : {{post.body}}
-            </div>
-        </div>
+        <post-form  @create="craetePost"/>
+        <post-list :posts="posts" />
     </div>
 </template>
 
 <script>
+import PostForm from '@/components/PostForm.vue';
+import PostList from '@/components/PostList.vue';
 export default {
+    components: {
+        PostList, PostForm,
+    },
     data() {
         return {
             posts: [
@@ -25,21 +20,12 @@ export default {
                 {id: 3, title: 'JavaScript', body:"Описание поста 3"},
                 {id: 4, title: 'JavaScript', body:"Описание поста 4"},
             ],
-            title: '',
-            body: '',
         }
     },
     methods: {
-        createPost() {
-            const newPost = {
-                id: Date.now(),
-                title: this.title,
-                body: this.body,
-            }
-            this.posts.push(newPost);
-            this.title = '';
-            this.body = '';
-        },
+        craetePost(post) {
+            this.posts.push(post);
+        }
     }
 }
 </script>
@@ -52,28 +38,5 @@ export default {
     }
     .app{
         padding: 20px;
-    }
-    .post {
-        padding: 15px;
-        border: 2px solid teal;
-        margin-top: 15px;
-    }
-    form {
-        display: flex;
-        flex-direction: column;
-    }
-    .input {
-        width: 100%;
-        border: 1px solid teal;
-        padding: 10px 15px;
-        margin-top: 15px;
-    }
-    .btn {
-        margin-top: 15px;
-        align-self: flex-end;
-        padding: 10px 15px;
-        background: none;
-        color: teal;
-        border: 1px solid teal;
     }
 </style>
