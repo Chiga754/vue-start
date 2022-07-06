@@ -1,6 +1,10 @@
 <template>
     <div class="app">
-        <post-form  @create="craetePost"/>
+        <h1>Страница с постами</h1>
+        <my-button @click="showDialog">Создать поста</my-button>
+        <my-dialog v-model:show="dialogVisible"> 
+            <post-form  @create="craetePost"/>
+        </my-dialog>
         <post-list :posts="posts" @remove="removePost" />
     </div>
 </template>
@@ -20,14 +24,19 @@ export default {
                 {id: 3, title: 'JavaScript', body:"Описание поста 3"},
                 {id: 4, title: 'JavaScript', body:"Описание поста 4"},
             ],
+            dialogVisible: false,
         }
     },
     methods: {
         craetePost(post) {
             this.posts.push(post);
+            this.dialogVisible = false;
         },
         removePost(post) {
             this.posts = this.posts.filter(el => el.id !== post.id);
+        },
+        showDialog() {
+            this.dialogVisible = true;
         }
     }
 }
