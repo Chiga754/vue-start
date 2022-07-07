@@ -1,6 +1,7 @@
 <template>
     <div class="app">
         <h1>Страница с постами</h1>
+        <my-input v-model="searchQuery" placeholder="Поиск..."/>
         <div class="app__btns">
             <my-button @click="showDialog">Создать поста</my-button>
             <my-select 
@@ -11,7 +12,7 @@
         <my-dialog v-model:show="dialogVisible"> 
             <post-form  @create="craetePost"/>
         </my-dialog>
-        <post-list :posts="sortedPosts" @remove="removePost" v-if="!isPostsLoading"/>
+        <post-list :posts="sortedAndSearchedPosts" @remove="removePost" v-if="!isPostsLoading"/>
         <h1 v-else>Идет загрузка...</h1>
     </div>
 </template>
@@ -35,6 +36,7 @@ export default {
             dialogVisible: false,
             isPostsLoading: false,
             selectedSort: '',
+            searchQuery: '',
             sortOptions: [
                 {value: 'title', name: "По названию"},
                 {value: 'body', name: "По описанию"},
@@ -72,6 +74,9 @@ export default {
     computed: {
         sortedPosts() {
             return [...this.posts].sort((post1, post2) => post1[this.selectedSort]?.localeCompare(post2[this.selectedSort]));
+        },
+        sortedAndSearchedPosts() {
+            return this.sortedPosts.filter(post => post.title.toLowerCase().includes(this.searchQuery.toLowerCase()));
         }
     },
 
