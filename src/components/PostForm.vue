@@ -40,7 +40,16 @@ export default {
                 body: '',
             }
         },
-    }
+    },
+    // Глубокое отслеживание 
+    // watch: {
+    //     post: {
+    //         handler(newValue){
+    //             console.log(newValue);
+    //         },
+    //         deep: true,
+    //     }
+    // }
 }
 </script>
 
