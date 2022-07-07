@@ -1,7 +1,13 @@
 <template>
     <div class="app">
         <h1>Страница с постами</h1>
-        <my-button @click="showDialog">Создать поста</my-button>
+        <div class="app__btns">
+            <my-button @click="showDialog">Создать поста</my-button>
+            <my-select 
+                v-model="selectedSort"
+                :options="sortOptions"
+            />
+        </div>
         <my-dialog v-model:show="dialogVisible"> 
             <post-form  @create="craetePost"/>
         </my-dialog>
@@ -15,17 +21,24 @@ import PostForm from '@/components/PostForm.vue';
 import PostList from '@/components/PostList.vue';
 import axios from 'axios';
 import MyButton from './components/UI/MyButton.vue';
+import MySelect from './components/UI/MySelect.vue';
 export default {
     components: {
     PostList,
     PostForm,
-    MyButton
+    MyButton,
+    MySelect
 },
     data() {
         return {
             posts: [],
             dialogVisible: false,
             isPostsLoading: false,
+            selectedSort: '',
+            sortOptions: [
+                {value: 'title', name: "По названию"},
+                {value: 'body', name: "По описанию"},
+            ],
         }
     },
     methods: {
@@ -66,5 +79,10 @@ export default {
     }
     .app{
         padding: 20px;
+    }
+    .app__btns{
+        margin: 15px 0;
+        display: flex;
+        justify-content: space-between;
     }
 </style>
